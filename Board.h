@@ -11,5 +11,6 @@ public:
 	bool isValid(int, int, bool, int, int);
 	bool movePiece(int, int, bool, int, int);
 	bool isKingValid(int, int, bool);
-	bool letsGetFat(int, int, bool);
+	bool eat(int, int, bool,int, int);
+	bool letsGetFatter(int, int, bool); //double/triple jump
 };
