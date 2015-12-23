@@ -94,9 +94,10 @@ bool Board::isValid(int i, int j, bool getColor, int dest_x, int dest_y) {
 		return false;
 	}
 	//iccekkja di ma adrian
-	else if (((dest_x - i) == std::abs(1) || ((dest_y - j)) == std::abs(1))) { //making sure a piece can only move 1 square, 1 up or 1 down
+	else if (((dest_x -j) != std::abs(1) || ((dest_y - i)) != std::abs(1))) { //making sure a piece can only move 1 square, 1 up or 1 down
 		return false;
 	}
+	else return true;
 }
 
 bool Board::movePiece(int i, int j, bool getColor, int dest_x, int dest_y) {
@@ -172,10 +173,10 @@ bool Board::letsGetFatter(int dest_x, int dest_y, bool color) {
 
 bool Board::eat(int i, int j, bool color, int dest_x, int dest_y) { //if this returns false, then dx dy is empty, use movePiece and put the piece there (i.e. no eating available)
 	//if returns true, a piece was eaten 
-	if (Board::board[dest_y][dest_x] != nullptr) { //there exists a piece to potentially eat
+	if (board[dest_y][dest_x] != nullptr) { //there exists a piece to potentially eat
 		if (color == true) { // top, white, x	
-			if ((Board::board[dest_y][dest_x]->getColor()) == false) {
-				if (Board::board[dest_y - 1][dest_x + 1] == nullptr) {
+			if ((board[dest_y][dest_x]->getColor()) == false) {
+				if (board[dest_y - 1][dest_x + 1] == nullptr) {
 					//vacant spot after red piece, o, bottom right
 					std::cout << "You can eat piece at position " << dest_y << dest_x << ". Press y to eat, n to stay" << std::endl;
 					char x1 = 0;
@@ -190,7 +191,7 @@ bool Board::eat(int i, int j, bool color, int dest_x, int dest_y) { //if this re
 						return false; //just move piece to dx dy, no eating.
 					}
 				}
-				else if ((Board::board[dest_y - 1][dest_x - 1]) == nullptr) {
+				else if ((board[dest_y - 1][dest_x - 1]) == nullptr) {
 					//vacant spot after red piece, o, bottom left
 					std::cout << "You can eat piece at position " << dest_y << dest_x << ". Press y to eat, n to stay" << std::endl;
 					char x2 = 0;
@@ -204,43 +205,100 @@ bool Board::eat(int i, int j, bool color, int dest_x, int dest_y) { //if this re
 
 					else return false;
 				}
-				else return false;
-			}
-			return false;
-			//colors are both white. 
-		}
-		else if (color == false) { //bottom, red, o
-			if ((Board::board[dest_y][dest_x]->getColor()) == true) {
-				if (Board::board[dest_y + 1][dest_x + 1] == nullptr) {
-					//vacant spot after white piece, x, top right
-					std::cout << "You can eat piece at position " << dest_y << dest_x << ". Press y to eat, n to stay" << std::endl;
-					char x3 = 0;
-					std::cin >> x3; 
-					if (x3 == 'y') {
-						board[dest_y + 1][dest_x + 1] = board[i][j];
-						board[i][j] = nullptr;
-						board[dest_y][dest_x] = nullptr;
-						return true;
+				else if (board[i][j]->isKing() == true) { //if piece is a white king, do all the above checks, + another 2 
+					if (board[dest_y + 1][dest_x + 1] == nullptr) {
+						//vacant spot after red, o, top right
+						std::cout << "You can eat piece at position " << dest_y << dest_x << ". Press y to eat, n to stay" << std::endl;
+						char x5 = 0;
+						std::cin >> x5;
+						if (x5 == 'y') {
+							board[dest_y + 1][dest_x + 1] = board[i][j];
+							board[i][j] = nullptr;
+							board[dest_y][dest_x] = nullptr;
+							return true;
+						}
+						else return false;
+					}
+					else if ((board[dest_y + 1][dest_x - 1]) == nullptr) {
+						//vacant spot after red, o, top left
+						std::cout << "You can eat piece at position " << dest_y << dest_x << ". Press y to eat, n to stay" << std::endl;
+						char x6 = 0;
+						std::cin >> x6;
+						if (x6 == 'y') {
+							board[dest_y + 1][dest_x - 1] = board[i][j];
+							board[i][j] = nullptr;
+							board[dest_y][dest_x] = nullptr;
+							return true;
+						}
+						else return false;
 					}
 					else return false;
+					//colors are both white, can't eat
 				}
-				else if ((Board::board[dest_y + 1][dest_x - 1]) == nullptr) {
-					//vacant spot after white piece, x, top left
-					std::cout << "You can eat piece at position " << dest_y << dest_x << ". Press y to eat, n to stay" << std::endl;
-					char x4 = 0;
-					std::cin >> x4;
-					if (x4 == 'y') {
-						board[dest_y + 1][dest_x - 1] = board[i][j];
-						board[i][j] = nullptr;
-						board[dest_y][dest_x] = nullptr;
-						return true;
+				else if (color == false) { //bottom, red, o
+					if ((board[dest_y][dest_x]->getColor()) == true) {
+						if (board[dest_y + 1][dest_x + 1] == nullptr) {
+							//vacant spot after white piece, x, top right
+							std::cout << "You can eat piece at position " << dest_y << dest_x << ". Press y to eat, n to stay" << std::endl;
+							char x3 = 0;
+							std::cin >> x3;
+							if (x3 == 'y') {
+								board[dest_y + 1][dest_x + 1] = board[i][j];
+								board[i][j] = nullptr;
+								board[dest_y][dest_x] = nullptr;
+								return true;
+							}
+							else return false;
+						}
+						else if ((board[dest_y + 1][dest_x - 1]) == nullptr) {
+							//vacant spot after white piece, x, top left
+							std::cout << "You can eat piece at position " << dest_y << dest_x << ". Press y to eat, n to stay" << std::endl;
+							char x4 = 0;
+							std::cin >> x4;
+							if (x4 == 'y') {
+								board[dest_y + 1][dest_x - 1] = board[i][j];
+								board[i][j] = nullptr;
+								board[dest_y][dest_x] = nullptr;
+								return true;
+							}
+							else return false;
+						}
+						else if (board[i][j]->isKing() == true) {
+							if (board[dest_y - 1][dest_x + 1] == nullptr) {
+								//vacant spot after red, o, top right
+								std::cout << "You can eat piece at position " << dest_y << dest_x << ". Press y to eat, n to stay" << std::endl;
+								char x7 = 0;
+								std::cin >> x7;
+								if (x7 == 'y') {
+									board[dest_y - 1][dest_x + 1] = board[i][j];
+									board[i][j] = nullptr;
+									board[dest_y][dest_x] = nullptr;
+									return true;
+								}
+								else return false;
+							}
+							else if ((board[dest_y - 1][dest_x - 1]) == nullptr) {
+								//vacant spot after red, o, top left
+								std::cout << "You can eat piece at position " << dest_y << dest_x << ". Press y to eat, n to stay" << std::endl;
+								char x8 = 0;
+								std::cin >> x8;
+								if (x8 == 'y') {
+									board[dest_y - 1][dest_x - 1] = board[i][j];
+									board[i][j] = nullptr;
+									board[dest_y][dest_x] = nullptr;
+									return true;
+								}
+								else return false;
+							}
+							else return false;
+							//colors are both red, can't eat
+						}
 					}
-					else return false;
+					else return false; //if the piece at the destination isnt of opposite color, then you cant eat
 				}
 				else return false;
 			}
-			else return false; //if the piece at the destination isnt of opposite color, then you cant eat
+			else return false; //no eating available since there was no piece to potentially eat in the first place
 		}
 	}
-	else return false; //no eating available since there was no piece to potentially eat in the first place
 }
