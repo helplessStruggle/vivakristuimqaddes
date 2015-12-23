@@ -10,7 +10,7 @@ private:
 	int y;
 
 public:
-	Piece(int,int,bool);
+	Piece(int, int, bool, bool kingBool = true);
 	int getX();
 	int getY();
 	void setX(int);
@@ -18,4 +18,6 @@ public:
 	void setColor(bool color);
 	bool getColor();
 	bool movePiece(int x, int y);
+	bool kingBool = false;
+	bool isKing() { return kingBool; }
 };
