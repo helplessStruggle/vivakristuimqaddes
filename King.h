@@ -3,7 +3,5 @@
 
 class King : public Piece {
 public:
-	King(int, int, bool);
-	kingBool = true;
-
+	
 };
