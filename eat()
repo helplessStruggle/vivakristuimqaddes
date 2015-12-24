@@ -1,0 +1,151 @@
+bool Board::eat(int i, int j, bool color, int dest_x, int dest_y) { //if this returns false, then dx dy is empty, use movePiece and put the piece there (i.e. no eating available)
+	//if returns true, a piece was eaten 
+	if (board[dest_y][dest_x] == nullptr) { 
+		//there exists a blank space at the destination
+		if (color) { 
+			// top, white, x	
+			if (j - dest_x == -2) {
+				//blank space is to the right of (i,j) piece
+				if ((board[i + 1][j + 1] != nullptr) && (board[i + 1][j + 1]->getColor() == false)) { 
+					//a piece exists between ij piece and dxdy of opposite color we can eat, bottom right
+					std::cout << "You can eat piece at position " << j + 1 << i + 1 << ". Press y to eat and go to " << dest_y << dest_x << ", n to stay" << std::endl;
+						char x1 = 0;
+						std::cin >> x1;
+						if (x1 == 'y') {
+							board[dest_y][dest_x] = board[i][j]; 
+							//initial piece copied to new position
+							board[i][j] = nullptr; 
+							//initial piece 'moved', so delete the 'old' piece
+							board[i + 1][j + 1] = nullptr; 
+							//piece eaten, removed from board
+							return true;
+						}
+						else {
+							return false; 
+							//user doesnt want to eat, 
+						}
+					}
+				
+				else if (j - dest_x == 2) {
+					//vacant space after piece left side of current piece
+					if ((board[i + 1][j - 1] != nullptr) && (board[i + 1][j - 1]->getColor() == false)) {
+						//there exists a piece diagonally of initial piece and of opposite color
+						std::cout << "You can eat piece at position " << j-1 << i + 1 << ". Press y to eat and go to " << dest_y << dest_x << ", n to stay" << std::endl;
+						char x2 = 0;
+						std::cin >> x2;
+						if (x2 == 'y') {
+							board[dest_y][dest_x] = board[i][j];
+							board[i][j] = nullptr;
+							board[i + 1][j - 1] = nullptr;
+							return true;
+						}
+						else return false;
+					}
+				}
+				else if (board[i][j]->isKing() == true) { //if piece is a white king, it can move backwards as well
+					if (j - dest_x == -2) {
+						//then piece is to the right of king piece
+						if ((board[i - 1][j + 1] != nullptr && board[i - 1][j + 1]->getColor() == false)) {
+							std::cout << "You can eat piece at position " << j+1 << i-1 << ". Press y to eat and go to " << dest_y << dest_x << ", n to stay" << std::endl;
+							char x5 = 0;
+							std::cin >> x5;
+							if (x5 == 'y') {
+								board[dest_y][dest_x] = board[i][j];
+								board[i-1][j+1] = nullptr;
+								board[i][j] = nullptr;
+								return true;
+							}
+							else return false;
+						}
+					}
+					else if (j - dest_x == 2) {
+						//vacant space is to the left of (i,j) piece
+						if ((board[i - 1][j - 1]) != nullptr && board[i - 1][j - 1]->getColor() == false) {
+							//red piece, o, top left
+							std::cout << "You can eat piece at position " << j-1 << i-1 << ". Press y to eat and go to " << dest_y << dest_x << ", n to stay" << std::endl;
+							char x6 = 0;
+							std::cin >> x6;
+							if (x6 == 'y') {
+								board[dest_y][dest_x] = board[i][j];
+								board[i][j] = nullptr;
+								board[i - 1][j - 1] = nullptr;
+								return true;
+							}
+							else return false;
+						}
+					}
+				}
+				else return false; //if not a king, then we have exhausted all our options. User just wants to move the piece
+			} //then pieces are of the same color. cannot eat
+
+		}
+		if (!color) { //red piece, bottom, o
+				if (j - dest_x == -2) { //destination space is top right of current piece
+					if ((board[i - 1][j + 1] != nullptr) && (board[i - 1][j + 1]->getColor() == true)) {
+						//there exists an opponent piece between current coordinates and destination coordinates, 2 blocks afar
+						std::cout << "You can eat piece at position " << j+1 << i-1 << ". Press y to eat and go to " << dest_y << dest_x << ", n to stay" << std::endl;
+						char x3 = 0;
+						std::cin >> x3;
+						if (x3 == 'y') {
+							board[dest_y][dest_x] = board[i][j];
+							board[i][j] = nullptr;
+							board[i - 1][j + 1] = nullptr;
+							return true;
+						}
+						else return false; //user doesn't want to eat and move
+					}
+				}
+				else if (j - dest_x == 2) { 
+					//destination is to the left of current position
+					if ((board[i - 1][j - 1] != nullptr) && (board[i - 1][j - 1]->getColor() == true)) {
+						std::cout << "You can eat piece at position " << j-1 << i-1 << ". Press y to eat and go to " << dest_y << dest_x << ", n to stay" << std::endl;
+						char x4 = 0;
+						std::cin >> x4;
+						if (x4 == 'y') {
+							board[dest_y][dest_x] = board[i][j];
+							board[i - 1][j - 1] = nullptr;
+							board[i][j] = nullptr;
+							return true;
+						}
+						else return false;
+					}
+				}
+				if (board[i][j]->isKing() == true) { //then it can move backwards too
+					if (j - dest_x == -2) {
+						if ((board[i + 1][j + 1] != nullptr) && (board[i + 1][j + 1]->getColor() == true)) {
+							//piece at bottom right side
+							std::cout << "You can eat piece at position " << j + 1 << i + 1 << ". Press y to eat and go to " << dest_y << dest_x << ", n to stay" << std::endl;
+							char x7 = 0;
+							std::cin >> x7;
+							if (x7 == 'y') {
+								board[dest_y][dest_x] = board[i][j];
+								board[i][j] = nullptr;
+								board[i + 1][j + 1] = nullptr;
+								return true;
+							}
+							else return false; //user doesn't want to eat piece
+						}
+					}
+					else if (j - dest_x == 2) {
+						//regarding left side
+						if ((board[i + 1][j - 1] != nullptr) && (board[i + 1][j - 1]->getColor() == true)) {
+							std::cout << "You can eat piece at position " << j - 1 << i + 1 << ". Press y to eat and go to " << dest_y << dest_x << ", n to stay" << std::endl;
+							char x8 = 0;
+							std::cin >> x8;
+							if (x8 == 'y') {
+								board[dest_y][dest_x] = board[i][j];
+								board[i][j] = nullptr;
+								board[i+1][j-1] = nullptr;
+								return true;
+							}
+							else return false;
+						}
+					}
+				}
+				//then it's not a king either
+		}
+		//tacled both colors
+	} 
+	//else there is a piece, cannot eat 2 exactly after each other
+	else return false;
+}
