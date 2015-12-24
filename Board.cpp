@@ -278,23 +278,21 @@ bool Board::eat(int i, int j, bool color, int dest_x, int dest_y) { //if this re
 }
 	
 bool Board::gameOver() {
-	int whitepiece = 0;
-	int redpiece = 0;
 	for (int i = 0; i < 8; i++){
 		for (int j = 0; j < 8; j++) {
 			if (Board::board[i][j]->getColor() == false) {
-				redpiece++;
+				Board::redPiece++;
 			}
 			else if (Board::board[i][j]->getColor() == true) {
-				whitepiece++;
+				Board::whitePiece++;
 			}
 		}
 	}
-	if (redpiece == 0) {
+	if (Board::redPiece == 0) {
 		std::cout << "White won!" << std::endl;
 		return true;
 	}
-	else if (whitepiece = 0) {
+	else if (Board::whitePiece = 0) {
 		std::cout << "Red won!" << std::endl;
 		return true;
 	}
