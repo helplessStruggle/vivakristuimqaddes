@@ -4,6 +4,8 @@
 #include <string>
 #include "Game.h"
 Game *myGame = new Game();
+Board *myBoard = new Board();
+
 int main() {
 	int userInput = 0;
 	switch (userInput) {
@@ -25,17 +27,11 @@ int main() {
 	}
 
 	if (userInput == 2) {
-		std::cout << "Enter a name for the file to be saved" << std::endl;
-		std::string x = "";
-		std::cin >> x;
-		std::ofstream myfile(x);
-		if (myfile.is_open()) {
-			//if file opens successfully
-			if (myGame->count % 2 == 0){
-
+		if (myGame->saveGame()) {
+			std::cout << "File saved successfully" << std::endl;
 		}
+		else { std::cout << "Error.Saving unsuccessful" << std::endl; }
 	}
 	return 0;
 }
-
 
