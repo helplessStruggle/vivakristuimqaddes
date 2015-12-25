@@ -501,3 +501,7 @@ bool Board::eat2(int i, int j, int dest_x, int dest_y, bool color) {
 		}
 	}
 }
+
+Piece* Board::getPiece(int x, int y) { 
+	return Board::board[y][x]; 
+}
