@@ -1,12 +1,12 @@
 #include "Piece.h"
-
-
+#include "Board.h"
 //Constuctor
-Piece::Piece(int g_x, int g_y, bool g_color)
+Piece::Piece(int g_x, int g_y, bool g_color, bool g_kingBool)
 {
 	Piece::x = g_x;
 	Piece::y = g_y;
 	Piece::color = g_color;
+	Piece::kingBool = g_kingBool;
 }
 
 //Setters and Getters
@@ -32,8 +32,4 @@ int Piece::getY() {
 
 bool Piece::getColor() {
 	return color;
-}
-
-bool Piece::movePiece(int x, int y) {
-	getPiece(x1, y1);
 }
