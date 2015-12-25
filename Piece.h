@@ -10,14 +10,14 @@ private:
 	int y;
 
 public:
-	Piece(int, int, bool, bool kingBool = true);
+	Piece(int, int, bool, bool kingBool = true); //what the fuck is this kingBOol doing here
 	int getX();
 	int getY();
 	void setX(int);
 	void setY(int);
 	void setColor(bool color);
 	bool getColor();
-	bool movePiece(int x, int y);
 	bool kingBool = false;
 	bool isKing() { return kingBool; }
+	void setKing(bool value) { Piece::kingBool = value; }
 };
