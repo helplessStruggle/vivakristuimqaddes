@@ -5,7 +5,7 @@ class Board
 {
 public:
 	Piece *board[8][8];
-	Piece *getPiece(int x, int y) { return Board::board[y][x]; }
+	Piece* getPiece(int, int);
 	//returns a pointer to a piece
 	 Board();
 	~Board();
